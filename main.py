@@ -20,12 +20,14 @@ first_artist = search_results.findChildren('li', attrs={'class': 'artist'})[0]
 artist_link = first_artist.find('a')
 tooltip = json.loads(artist_link.attrs['data-tooltip'])
 artist_id = tooltip['id']
-print(artist_id)
 
 # ========================================================================
 # discography page
 # ========================================================================
-discography_page = BeautifulSoup(open('robert-wyatt.html'), 'html.parser')
+
+discography_url = 'https://www.allmusic.com/artist/' + artist_id + '/discography'
+discography_response = requests.get(discography_url, headers=headers)
+discography_page = BeautifulSoup(discography_response.text, 'html.parser')
 picks = discography_page.findChildren('tr', attrs={"class": "pick"})
 artist = discography_page.title.text.split('|')[0].strip()
 
