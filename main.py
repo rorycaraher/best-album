@@ -5,14 +5,15 @@ from bs4 import BeautifulSoup
 
 # ========================================================================
 # get the argument
+# set headers so the query doesn't get rejected!
 # ========================================================================
 search_term = sys.argv[1]
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
 # ========================================================================
 # do a search
 # ========================================================================
 search_url = 'https://www.allmusic.com/search/all/' + search_term
-headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 search_response = requests.get(search_url, headers=headers)
 
 # ========================================================================
