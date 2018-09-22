@@ -28,17 +28,17 @@ artist_id = tooltip['id']
 discography_url = 'https://www.allmusic.com/artist/' + artist_id + '/discography'
 discography_response = requests.get(discography_url, headers=headers)
 discography_page = BeautifulSoup(discography_response.text, 'html.parser')
-picks = discography_page.findChildren('tr', attrs={"class": "pick"})
 artist = discography_page.title.text.split('|')[0].strip()
+picks = discography_page.findChildren('tr', attrs={"class": "pick"})
 
-album_list = []
-for pick in picks:
-	album_list.append(pick.findChildren('td', attrs={"class": "title"})[0].text.strip())
 
-# ========================================================================
-# output
-# ========================================================================
-print(artist + ', eh? You should start with: ')
-for album in album_list:
-	print(album)
+if picks:
+	album_list = []
+	for pick in picks:
+		album_list.append(pick.findChildren('td', attrs={"class": "title"})[0].text.strip())
 
+	print(artist + ', eh? You should start with: ')
+	for album in album_list:
+		print(album)
+else:
+	print('Not sure where to start with ' + artist + '...')
