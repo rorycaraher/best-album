@@ -5,9 +5,12 @@ from bs4 import BeautifulSoup
 
 # ========================================================================
 # get the argument
-# do a search
 # ========================================================================
 search_term = sys.argv[1]
+
+# ========================================================================
+# do a search
+# ========================================================================
 search_url = 'https://www.allmusic.com/search/all/' + search_term
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 search_response = requests.get(search_url, headers=headers)
@@ -24,14 +27,15 @@ artist_id = tooltip['id']
 # ========================================================================
 # discography page
 # ========================================================================
-
 discography_url = 'https://www.allmusic.com/artist/' + artist_id + '/discography'
 discography_response = requests.get(discography_url, headers=headers)
 discography_page = BeautifulSoup(discography_response.text, 'html.parser')
 artist = discography_page.title.text.split('|')[0].strip()
 picks = discography_page.findChildren('tr', attrs={"class": "pick"})
 
-
+# ========================================================================
+# output
+# ========================================================================
 if picks:
 	album_list = []
 	for pick in picks:
