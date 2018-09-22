@@ -2,13 +2,6 @@ import sys
 from bs4 import BeautifulSoup
 
 # ========================================================================
-# search results
-# ========================================================================
-search_results = BeautifulSoup(open('search.html'), 'html.parser')
-artists = search_results.findChildren('li', attrs={'class': 'artist'})
-
-
-# ========================================================================
 # discography page
 # ========================================================================
 discography_page = BeautifulSoup(open('robert-wyatt.html'), 'html.parser')
