@@ -20,7 +20,7 @@ search_response = requests.get(search_url, headers=headers)
 # search results
 # ========================================================================
 search_results = BeautifulSoup(search_response.text, 'html.parser')
-first_artist = search_results.findChildren('li', attrs={'class': 'artist'})[0]
+first_artist = search_results.find('li', attrs={'class': 'artist'})
 artist_link = first_artist.find('a')
 tooltip = json.loads(artist_link.attrs['data-tooltip'])
 artist_id = tooltip['id']
