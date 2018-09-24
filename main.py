@@ -13,38 +13,48 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleW
 # ========================================================================
 # do a search
 # ========================================================================
-search_url = 'https://www.allmusic.com/search/all/' + search_term
-search_response = requests.get(search_url, headers=headers)
+def get_search_response(search_term):
+    search_url = 'https://www.allmusic.com/search/all/' + search_term
+    return requests.get(search_url, headers=headers)
+search_response = get_search_response(search_term)
 
 # ========================================================================
 # search results
 # ========================================================================
-search_results = BeautifulSoup(search_response.text, 'html.parser')
-first_artist = search_results.find('li', attrs={'class': 'artist'})
-artist_link = first_artist.find('a')
-tooltip = json.loads(artist_link.attrs['data-tooltip'])
-artist_id = tooltip['id']
+def get_artist_id(search_response):
+    search_results = BeautifulSoup(search_response.text, 'html.parser')
+    first_artist = search_results.find('li', attrs={'class': 'artist'})
+    artist_link = first_artist.find('a')
+    tooltip = json.loads(artist_link.attrs['data-tooltip'])
+    return tooltip['id']
+
+artist_id = get_artist_id(search_response)
 
 # ========================================================================
 # discography page
 # ========================================================================
-discography_url = 'https://www.allmusic.com/artist/' + artist_id + '/discography'
-discography_response = requests.get(discography_url, headers=headers)
-discography_page = BeautifulSoup(discography_response.text, 'html.parser')
-artist = discography_page.title.text.split('|')[0].strip()
-picks = discography_page.findChildren('tr', attrs={"class": "pick"})
+def get_artist_and_picks(artist_id):
+    discography_url = 'https://www.allmusic.com/artist/' + artist_id + '/discography'
+    discography_response = requests.get(discography_url, headers=headers)
+    discography_page = BeautifulSoup(discography_response.text, 'html.parser')
+    artist = discography_page.title.text.split('|')[0].strip()
+    return [artist, discography_page.findChildren('tr', attrs={"class": "pick"})]
+
+artist = get_artist_and_picks(artist_id)[0]
+picks = get_artist_and_picks(artist_id)[1]
+
 
 # ========================================================================
 # output
 # ========================================================================
 # TODO: get release year also!
 if picks:
-	album_list = []
-	for pick in picks:
-		album_list.append(pick.findChildren('td', attrs={"class": "title"})[0].text.strip())
+    album_list = []
+    for pick in picks:
+        album_list.append(pick.findChildren('td', attrs={"class": "title"})[0].text.strip())
 
-	print(artist + ', eh? You should start with: ')
-	for album in album_list:
-		print(album)
+    print(artist + ', eh? You should start with: ')
+    for album in album_list:
+        print(album)
 else:
-	print('Not sure where to start with ' + artist + '...')
+    print('Not sure where to start with ' + artist + '...')
