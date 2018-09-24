@@ -37,6 +37,7 @@ picks = discography_page.findChildren('tr', attrs={"class": "pick"})
 # ========================================================================
 # output
 # ========================================================================
+# TODO: get release year also!
 if picks:
 	album_list = []
 	for pick in picks:
