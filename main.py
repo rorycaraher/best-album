@@ -48,6 +48,7 @@ picks = get_artist_and_picks(artist_id)[1]
 # output
 # ========================================================================
 # TODO: get release year also!
+# TODO: display link to artist page also!
 if picks:
     album_list = []
     for pick in picks:
