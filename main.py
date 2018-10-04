@@ -16,6 +16,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleW
 def get_search_response(search_term):
     search_url = 'https://www.allmusic.com/search/all/' + search_term
     return requests.get(search_url, headers=headers)
+    
 search_response = get_search_response(search_term)
 
 # ========================================================================
