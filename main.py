@@ -39,7 +39,8 @@ def get_artist_and_picks(artist_id):
     discography_response = requests.get(discography_url, headers=headers)
     discography_page = BeautifulSoup(discography_response.text, 'html.parser')
     artist = discography_page.title.text.split('|')[0].strip()
-    return [artist, discography_page.findChildren('tr', attrs={"class": "pick"})]
+    picks = discography_page.findChildren('tr', attrs={"class": "pick"})
+    return [artist, picks]
 
 artist = get_artist_and_picks(artist_id)[0]
 picks = get_artist_and_picks(artist_id)[1]
@@ -53,7 +54,8 @@ picks = get_artist_and_picks(artist_id)[1]
 if picks:
     album_list = []
     for pick in picks:
-        album_list.append(pick.findChildren('td', attrs={"class": "title"})[0].text.strip())
+        title_year = pick.findChildren('td', attrs={"class": "title"})[0].text.strip() + ' - ' + pick.findChildren('td', attrs={"class": "year"})[0].text.strip()
+        album_list.append(title_year)
 
     print(artist + ', eh? You should start with: ')
     for album in album_list:
