@@ -18,6 +18,9 @@ artist_id = results['artists']['items'][0]['id']
 
 related_artists =  sp.artist_related_artists(artist_id)
 
-jsonrelartists = json.dumps(related_artists)
+for artist in related_artists['artists']:
+    print(artist['name'])
 
-print(jsonrelartists)
+# jsonrelartists = json.dumps(related_artists)
+
+# print(jsonrelartists)
